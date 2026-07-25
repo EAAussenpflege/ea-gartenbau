@@ -1,0 +1,69 @@
+# =========================================================
+# Baut die Astro-Seite und lädt sie per FTP zu STRATO hoch.
+# Läuft bei jedem Push auf main – oder manuell über den
+# Reiter "Actions" auf GitHub ("Run workflow").
+#
+# Vorher einmalig auf GitHub anlegen:
+#   Settings → Secrets and variables → Actions → New repository secret
+#     FTP_SERVER     z. B. ftp.strato.de
+#     FTP_USERNAME   dein STRATO-FTP-Benutzername
+#     FTP_PASSWORD   dein STRATO-FTP-Passwort
+# =========================================================
+
+name: Deploy zu STRATO
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Verhindert, dass sich zwei Deployments gleichzeitig ins Gehege kommen.
+concurrency:
+  group: deploy-strato
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Node einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Abhängigkeiten installieren
+        run: npm ci
+
+      - name: Seite bauen
+        run: npm run build
+
+      - name: Per FTP zu STRATO hochladen
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+
+          # Verschlüsselte Übertragung. Falls STRATO das für dein Paket
+          # nicht unterstützt, hier auf "ftp" ändern.
+          protocol: ftps
+
+          # Was hochgeladen wird: der Inhalt von dist/ (Schrägstrich am Ende!)
+          local-dir: ./dist/
+
+          # Wohin: Zielverzeichnis deiner Domain auf dem Webspace.
+          # "./" = Wurzelverzeichnis direkt nach dem FTP-Login.
+          # Liegt deine Domain in einem Unterordner, hier z. B.
+          # ./ea-gartenbau.de/ eintragen (Schrägstrich am Ende!).
+          server-dir: ./
+
+          # Diese Dateien gehören nicht auf den Webserver.
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
