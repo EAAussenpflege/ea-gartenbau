@@ -1,12 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const partners = [
-  { src: '/images/logos/terrastein.svg', alt: 'TerraStein Naturstein' },
-  { src: '/images/logos/floraplus.svg', alt: 'FloraPlus Baumschule' },
-  { src: '/images/logos/gruenwerk.svg', alt: 'GrünWerk Maschinen' },
-  { src: '/images/logos/hortitec.svg', alt: 'HortiTec Bewässerung' },
-  { src: '/images/logos/stadtgruen.svg', alt: 'Stadtgrün Kommunal Service' },
+// Orte, in denen wir arbeiten – laufen als Endlosband durch die Trustbar.
+const orte = [
+  'Weinheim',
+  'Hemsbach',
+  'Laudenbach',
+  'Birkenau',
+  'Gorxheimertal',
+  'Hirschberg',
+  'Schriesheim',
+  'Heddesheim',
+  'Viernheim',
+  'Ladenburg',
+  'Dossenheim',
+  'Heppenheim',
 ];
 
 const services = [
@@ -204,30 +212,32 @@ const faqs = [
   </section>
 
   <!-- ========================== TRUSTBAR ========================== -->
-  <section class="trustbar" aria-label="Partner und Zertifizierungen">
+  <section class="trustbar" aria-label="Einsatzgebiet">
     <div class="container">
-      <p class="trustbar__label">Partner, Lieferanten &amp; Zertifizierungen</p>
+      <p class="trustbar__label">Wir sind für Sie unterwegs in</p>
     </div>
 
     <div class="marquee">
-      <div class="marquee__track">
+      <div class="marquee__track" aria-hidden="true">
         {
-          [0, 1].map((pass) =>
-            partners.map((partner) => (
-              <img
-                class="marquee__logo"
-                src={partner.src}
-                alt={pass === 0 ? partner.alt : ''}
-                aria-hidden={pass === 1 ? 'true' : undefined}
-                width="220"
-                height="60"
-                loading="lazy"
-              />
+          [0, 1].map(() =>
+            orte.map((ort) => (
+              <span class="marquee__ort">
+                <span class="marquee__blatt" aria-hidden="true">
+                  🌿
+                </span>
+                {ort}
+              </span>
             )),
           )
         }
       </div>
     </div>
+
+    {/* Für Screenreader und Suchmaschinen: die Orte einmal als echter Text. */}
+    <p class="visuell-versteckt">
+      Einsatzgebiet: {orte.join(', ')} und Umgebung.
+    </p>
   </section>
 
   <!-- ======================= EIN-ZEILEN-SEKTION ==================== -->
@@ -689,21 +699,20 @@ const faqs = [
     animation-play-state: paused;
   }
 
-  .marquee__logo {
-    height: 46px;
-    width: auto;
-    opacity: 0.5;
-    filter: grayscale(1);
-    transition:
-      opacity 0.35s ease,
-      filter 0.35s ease,
-      transform 0.35s var(--ease);
+  .marquee__ort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex: none;
+    font-size: clamp(1.1rem, 0.95rem + 0.6vw, 1.5rem);
+    font-weight: 700;
+    color: var(--green-dark);
+    white-space: nowrap;
   }
 
-  .marquee__logo:hover {
-    opacity: 1;
-    filter: none;
-    transform: translateY(-3px);
+  .marquee__blatt {
+    font-size: 0.85em;
+    opacity: 0.65;
   }
 
   /* ====================== EIN-ZEILEN-SEKTION ==================== */

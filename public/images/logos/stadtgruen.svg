@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60" role="img" aria-label="Stadtgrün Service">
-  <g fill="#1E3D2B">
-    <circle cx="23" cy="26" r="17" opacity=".14"/>
-    <path d="M23 12a14 14 0 1 1 0 28 14 14 0 0 1 0-28zm0 4a10 10 0 1 0 0 20 10 10 0 0 0 0-20z"/>
-    <path d="M23 19c4 3 5.5 6 5.5 8.5A5.5 5.5 0 0 1 23 33a5.5 5.5 0 0 1-5.5-5.5c0-2.5 1.5-5.5 5.5-8.5z"/>
-    <text x="54" y="30" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="-.4">Stadtgrün</text>
-    <text x="55" y="43" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="9" letter-spacing="2.4" opacity=".65">KOMMUNAL SERVICE</text>
-  </g>
-</svg>
