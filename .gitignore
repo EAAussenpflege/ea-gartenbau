@@ -26,3 +26,6 @@ pnpm-debug.log*
 
 # lokale Claude-Code-Einstellungen
 .claude/settings.local.json
+
+# Deployment-Archiv fuer den Datei-Manager
+website.zip
