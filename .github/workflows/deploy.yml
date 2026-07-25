@@ -5,9 +5,11 @@
 #
 # Vorher einmalig auf GitHub anlegen:
 #   Settings → Secrets and variables → Actions → New repository secret
-#     FTP_SERVER     FTP-Host aus dem hPanel
+#     FTP_SERVER     FTP-Host oder IP-Adresse aus dem hPanel
 #     FTP_USERNAME   FTP-Benutzername aus dem hPanel
 #     FTP_PASSWORD   FTP-Passwort aus dem hPanel
+#
+# Dieselben Werte stehen lokal in der Datei .env.
 # =========================================================
 
 name: Deploy zu Hostinger
@@ -19,7 +21,7 @@ on:
 
 # Verhindert, dass sich zwei Deployments gleichzeitig ins Gehege kommen.
 concurrency:
-  group: deploy-strato
+  group: deploy-hostinger
   cancel-in-progress: true
 
 jobs:
@@ -43,13 +45,19 @@ jobs:
         run: npm run build
 
       # Die GitHub-Runner haben kein IPv6-Netz. Löst der FTP-Host auf eine
-      # IPv6-Adresse auf, bricht die Verbindung mit ENETUNREACH ab. Wir
-      # schlagen die IPv4-Adresse nach und tragen sie fest in /etc/hosts ein –
-      # so bleibt der Hostname erhalten (wichtig für das FTPS-Zertifikat).
+      # IPv6-Adresse auf, bricht die Verbindung mit ENETUNREACH ab. Deshalb
+      # wird die IPv4-Adresse vorab nachgeschlagen und fest in /etc/hosts
+      # eingetragen – der Hostname bleibt dabei erhalten. Ist FTP_SERVER
+      # bereits eine IP-Adresse, entfällt der Schritt.
       - name: FTP-Server auf IPv4 festlegen
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
         run: |
+          if printf '%s' "$FTP_SERVER" | grep -qE '^[0-9]+(\.[0-9]+){3}$'; then
+            echo "FTP_SERVER ist bereits eine IPv4-Adresse – nichts zu tun."
+            exit 0
+          fi
+
           IPV4=$(getent ahostsv4 "$FTP_SERVER" | awk '{ print $1; exit }')
           if [ -z "$IPV4" ]; then
             echo "Keine IPv4-Adresse fuer den FTP-Server gefunden."
@@ -58,23 +66,23 @@ jobs:
           echo "IPv4-Adresse gefunden: $IPV4"
           echo "$IPV4 $FTP_SERVER" | sudo tee -a /etc/hosts > /dev/null
 
-      - name: Per FTP zu STRATO hochladen
+      - name: Per FTP zu Hostinger hochladen
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
 
-          # Verschlüsselte Übertragung. Falls STRATO das für dein Paket
-          # nicht unterstützt, hier auf "ftp" ändern.
+          # Verschlüsselte Übertragung. Falls Hostinger das ablehnt,
+          # hier auf "ftp" ändern.
           protocol: ftps
 
           # Was hochgeladen wird: der Inhalt von dist/ (Schrägstrich am Ende!)
           local-dir: ./dist/
 
-          # Wohin: Zielverzeichnis auf dem Webspace.
-          # Bei Hostinger liegt die Website immer in public_html.
-          server-dir: ./public_html/
+          # Wohin: Nach dem Login landet man im Home-Verzeichnis. Der
+          # Webordner der Domain liegt darunter – NICHT unter /public_html.
+          server-dir: ./domains/ea-gartenbau-pflege.de/public_html/
 
           # Diese Dateien gehören nicht auf den Webserver.
           exclude: |
