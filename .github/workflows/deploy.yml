@@ -1,16 +1,16 @@
 # =========================================================
-# Baut die Astro-Seite und lädt sie per FTP zu STRATO hoch.
+# Baut die Astro-Seite und lädt sie per FTP zu Hostinger hoch.
 # Läuft bei jedem Push auf main – oder manuell über den
 # Reiter "Actions" auf GitHub ("Run workflow").
 #
 # Vorher einmalig auf GitHub anlegen:
 #   Settings → Secrets and variables → Actions → New repository secret
-#     FTP_SERVER     z. B. ftp.strato.de
-#     FTP_USERNAME   dein STRATO-FTP-Benutzername
-#     FTP_PASSWORD   dein STRATO-FTP-Passwort
+#     FTP_SERVER     FTP-Host aus dem hPanel
+#     FTP_USERNAME   FTP-Benutzername aus dem hPanel
+#     FTP_PASSWORD   FTP-Passwort aus dem hPanel
 # =========================================================
 
-name: Deploy zu STRATO
+name: Deploy zu Hostinger
 
 on:
   push:
@@ -42,12 +42,11 @@ jobs:
       - name: Seite bauen
         run: npm run build
 
-      # STRATO ist per IPv4 und IPv6 erreichbar, die GitHub-Runner haben aber
-      # kein IPv6-Netz. Ohne diesen Schritt versucht Node zuerst die
-      # IPv6-Adresse und bricht mit ENETUNREACH ab. Wir schlagen die
-      # IPv4-Adresse nach und tragen sie fest in /etc/hosts ein – so bleibt
-      # der Hostname erhalten (wichtig fuer das FTPS-Zertifikat).
-      - name: STRATO auf IPv4 festlegen
+      # Die GitHub-Runner haben kein IPv6-Netz. Löst der FTP-Host auf eine
+      # IPv6-Adresse auf, bricht die Verbindung mit ENETUNREACH ab. Wir
+      # schlagen die IPv4-Adresse nach und tragen sie fest in /etc/hosts ein –
+      # so bleibt der Hostname erhalten (wichtig für das FTPS-Zertifikat).
+      - name: FTP-Server auf IPv4 festlegen
         env:
           FTP_SERVER: ${{ secrets.FTP_SERVER }}
         run: |
@@ -73,11 +72,9 @@ jobs:
           # Was hochgeladen wird: der Inhalt von dist/ (Schrägstrich am Ende!)
           local-dir: ./dist/
 
-          # Wohin: Zielverzeichnis deiner Domain auf dem Webspace.
-          # "./" = Wurzelverzeichnis direkt nach dem FTP-Login.
-          # Liegt deine Domain in einem Unterordner, hier z. B.
-          # ./ea-gartenbau.de/ eintragen (Schrägstrich am Ende!).
-          server-dir: ./
+          # Wohin: Zielverzeichnis auf dem Webspace.
+          # Bei Hostinger liegt die Website immer in public_html.
+          server-dir: ./public_html/
 
           # Diese Dateien gehören nicht auf den Webserver.
           exclude: |

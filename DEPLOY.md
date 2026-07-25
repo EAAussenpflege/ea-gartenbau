@@ -1,66 +1,43 @@
-# Deployment – EA-Außenpflege auf STRATO
+# Deployment – EA-Außenpflege auf Hostinger
 
-Die Seite ist eine statische Astro-Seite. Auf dem STRATO-Webspace läuft kein
+Die Seite ist eine statische Astro-Seite. Auf dem Hostinger-Webspace läuft kein
 Node.js – das ist auch nicht nötig: Gebaut wird vorher, auf den Server kommt
 nur fertiges HTML.
 
-Domain: **https://ea-gartenbau.de** (eingetragen in `astro.config.mjs`)
+Domain: **https://ea-gartenbau-pflege.de** (eingetragen in `astro.config.mjs`)
+Zielverzeichnis auf dem Server: **`public_html`**
 
 ---
 
-## Variante A – Automatisch bei jedem Push (eingerichtet)
+## Wichtig: Warum die Git-Funktion von Hostinger nicht reicht
 
-Der Workflow `.github/workflows/deploy.yml` baut die Seite und lädt sie per FTP
-hoch, sobald etwas auf `main` gepusht wird.
+Hostinger kopiert bei der Git-Verbindung den **Repository-Inhalt** nach
+`public_html`, führt aber **keinen Build aus**. Im Repository liegen nur die
+Quelldateien (`src/`, `package.json`); die fertige Website entsteht erst durch
+`npm run build` im Ordner `dist/`, der bewusst nicht eingecheckt ist.
 
-### Einmalige Einrichtung
-
-1. Im **STRATO-Kundenlogin** unter der Paketverwaltung einen FTP-Zugang öffnen
-   bzw. ein FTP-Passwort setzen. Notiere Server, Benutzername und Passwort.
-2. Auf GitHub im Repository:
-   **Settings → Secrets and variables → Actions → New repository secret**
-
-   | Secret | Beispielwert |
-   | --- | --- |
-   | `FTP_SERVER` | `ftp.strato.de` |
-   | `FTP_USERNAME` | dein STRATO-FTP-Benutzername |
-   | `FTP_PASSWORD` | dein STRATO-FTP-Passwort |
-
-3. Prüfen, ob die Domain im Wurzelverzeichnis liegt. Falls nicht, in
-   `deploy.yml` bei `server-dir` den passenden Unterordner eintragen.
-
-### Danach
-
-Jeder Push auf `main` deployt automatisch. Der Fortschritt steht auf GitHub
-unter **Actions**. Manuell auslösen geht dort ebenfalls über *Run workflow*.
-
-Beim ersten Lauf lädt die Action alles hoch, danach nur noch geänderte Dateien.
-Dafür legt sie auf dem Server die Datei `.ftp-deploy-sync-state.json` an – die
-gehört dorthin und darf nicht gelöscht werden.
+Deshalb wird über FTP deployt – entweder automatisch über GitHub Actions oder
+mit einem Befehl vom eigenen Rechner.
 
 ---
 
-> **Bekanntes Problem:** Die GitHub-Action scheitert bisher mit
-> `Timeout (control socket)`. Die Verbindung zu Port 21 kommt vom
-> GitHub-Runner aus gar nicht zustande – vermutlich blockiert STRATO
-> FTP-Zugriffe aus Rechenzentren. Bis das geklärt ist, funktioniert
-> **Variante B** zuverlässig.
+## Zugangsdaten holen
+
+Im **hPanel** unter **Dateien → FTP-Konten**. Dort stehen:
+
+- FTP-Host (z. B. eine IP-Adresse oder `ftp.ea-gartenbau-pflege.de`)
+- FTP-Benutzername (Format `u123456789.ea-gartenbau-pflege.de`)
+- Passwort – falls unbekannt, dort neu setzen
 
 ---
 
-## Variante B – Ein Befehl vom eigenen Rechner
+## Variante A – Ein Befehl vom eigenen Rechner
 
-Baut die Seite und lädt sie direkt hoch – ohne Umweg über GitHub, deshalb
-unabhängig von etwaigen IP-Sperren.
+### Einmalig
 
-### Einmalige Einrichtung
-
-1. Datei `.env.example` kopieren, die Kopie in `.env` umbenennen
-2. In `.env` die Zugangsdaten aus dem STRATO-Kundenlogin eintragen
-
-Die Datei `.env` ist über `.gitignore` ausgeschlossen und landet nie auf
-GitHub. Zugangsdaten gehören ausschließlich dorthin – niemals in eine Datei,
-die eingecheckt wird.
+Die Werte in die Datei `.env` im Projektordner eintragen (Vorlage:
+`.env.example`). Diese Datei ist über `.gitignore` ausgeschlossen und landet
+nie auf GitHub – Zugangsdaten gehören ausschließlich dorthin.
 
 ### Deployen
 
@@ -68,30 +45,41 @@ die eingecheckt wird.
 npm run deploy
 ```
 
-Das baut die Seite neu und lädt anschließend alles aus `dist/` hoch. Jede
+Baut die Seite neu und lädt alles aus `dist/` nach `public_html`. Jede
 übertragene Datei wird einzeln aufgelistet.
+
+Falls PowerShell die Ausführung blockiert, stattdessen `npm.cmd run deploy`
+verwenden.
 
 ---
 
-## Variante C – Manuell per FileZilla
+## Variante B – Automatisch bei jedem Push
 
-```bash
-npm run build
-```
+Der Workflow `.github/workflows/deploy.yml` baut die Seite und lädt sie hoch,
+sobald etwas auf `main` gepusht wird.
 
-Anschließend mit einem FTP-Programm (z. B. FileZilla) den **Inhalt** von `dist/`
-in das Zielverzeichnis der Domain hochladen – nicht den Ordner `dist` selbst.
+Dafür auf GitHub unter **Settings → Secrets and variables → Actions** drei
+Secrets anlegen – dieselben Werte wie in der `.env`:
 
-Versteckte Dateien im FTP-Programm einblenden, sonst fehlt die `.htaccess`.
+| Secret | Inhalt |
+| --- | --- |
+| `FTP_SERVER` | FTP-Host aus dem hPanel |
+| `FTP_USERNAME` | FTP-Benutzername aus dem hPanel |
+| `FTP_PASSWORD` | FTP-Passwort |
+
+Der Fortschritt steht auf GitHub unter **Actions**.
+
+Beim ersten Lauf lädt die Action alles hoch, danach nur noch geänderte Dateien.
+Dafür legt sie auf dem Server die Datei `.ftp-deploy-sync-state.json` an – die
+gehört dorthin und darf nicht gelöscht werden.
 
 ---
 
 ## HTTPS
 
-1. Im STRATO-Kundenlogin das SSL-Zertifikat für die Domain aktivieren.
-2. Warten, bis `https://ea-gartenbau.de` im Browser funktioniert.
-3. Erst dann in `public/.htaccess` den HTTPS-Block entkommentieren und neu
-   deployen. Vorher führt die Weiterleitung ins Leere.
+Hostinger stellt das SSL-Zertifikat automatisch aus. Sobald
+`https://ea-gartenbau-pflege.de` im Browser funktioniert, in `public/.htaccess`
+den HTTPS-Block entkommentieren und neu deployen.
 
 ---
 
@@ -99,8 +87,9 @@ Versteckte Dateien im FTP-Programm einblenden, sonst fehlt die `.htaccess`.
 
 - **Impressum und Datenschutzerklärung** enthalten nur „Inhalt folgt“ – bei
   einer gewerblichen Seite in Deutschland sind beide Pflicht.
-- **Platzhalter-Texte** ersetzen: „Musterstadt“, Telefonnummer `0123 456 78 90`,
-  Adresse, E-Mail, Gründungsjahr, Kennzahlen und Testimonials.
+- **Kontaktseite** ist noch leer, obwohl alle Buttons dorthin führen.
+- **Kundenstimmen** sind ausgeblendet, bis echte Google-Bewertungen in
+  `src/pages/index.astro` eingetragen sind.
 - **Bilder** in `public/images/` sind CC-lizenzierte Beispielbilder mit kleinem
   Wasserzeichen. Für die Live-Seite durch eigene Fotos ersetzen – die
   Dateinamen können 1:1 beibehalten werden, dann ist keine Codeänderung nötig.

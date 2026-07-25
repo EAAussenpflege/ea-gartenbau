@@ -3,5 +3,5 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://ea-gartenbau.de',
+  site: 'https://ea-gartenbau-pflege.de',
 });
