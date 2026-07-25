@@ -1,0 +1,193 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+
+const navLinks = [
+  { href: '/', label: 'Startseite' },
+  { href: '/dienstleistungen', label: 'Unsere Dienstleistungen' },
+  { href: '/ueber-mich', label: 'Über mich' },
+  { href: '/kontakt', label: 'Kontakt' },
+];
+
+const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Markiert, dass JS läuft – nur dann werden Inhalte für die Scroll-Animation ausgeblendet. -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#5cb85c" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/images/hero.jpg" />
+    <meta property="og:locale" content="de_DE" />
+  </head>
+
+  <body>
+    <header class="site-header" id="siteHeader">
+      <div class="container site-header__inner">
+        <a href="/" class="logo" aria-label="EA-Außenpflege – zur Startseite">
+          <span class="logo__mark" aria-hidden="true">EA</span>
+          <span class="logo__text">
+            EA-Außenpflege
+            <small>Garten &amp; Landschaftsbau</small>
+          </span>
+        </a>
+
+        <nav class="nav" id="mainNav" aria-label="Hauptnavigation">
+          {
+            navLinks.map((link) => (
+              <a href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+                {link.label}
+              </a>
+            ))
+          }
+          <a class="btn btn--primary btn--sm" href="/kontakt">Angebot anfordern</a>
+        </nav>
+
+        <div class="header-actions">
+          <a class="btn btn--primary btn--sm" href="/kontakt">
+            Angebot anfordern <span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="Menü öffnen">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="/" class="logo">
+              <span class="logo__mark" aria-hidden="true">EA</span>
+              <span class="logo__text">
+                EA-Außenpflege
+                <small>Garten &amp; Landschaftsbau</small>
+              </span>
+            </a>
+            <p>
+              Ihr Meisterbetrieb für Garten- und Landschaftsbau, Gartenpflege und die
+              professionelle Reinigung von Fenstern, Photovoltaikanlagen und Fassaden.
+            </p>
+          </div>
+
+          <div>
+            <h4>Leistungen</h4>
+            <ul class="footer-list">
+              <li><a href="/dienstleistungen">Garten- &amp; Landschaftsbau</a></li>
+              <li><a href="/dienstleistungen">Gartenpflege</a></li>
+              <li><a href="/dienstleistungen">Fenster- &amp; PV-Reinigung</a></li>
+              <li><a href="/dienstleistungen">Fassadenreinigung</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4>Unternehmen</h4>
+            <ul class="footer-list">
+              <li><a href="/ueber-mich">Über mich</a></li>
+              <li><a href="/dienstleistungen">Unsere Dienstleistungen</a></li>
+              <li><a href="/kontakt">Kontakt</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4>Kontakt</h4>
+            <ul class="footer-list">
+              <li><a href="tel:+491234567890">0123 456 78 90</a></li>
+              <li><a href="mailto:info@ea-aussenpflege.de">info@ea-aussenpflege.de</a></li>
+              <li>Musterstraße 12<br />12345 Musterstadt</li>
+              <li>Mo–Fr 07:00–17:00 Uhr</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span>© {new Date().getFullYear()} EA-Außenpflege. Alle Rechte vorbehalten.</span>
+          <div class="footer-legal">
+            <a href="/impressum">Impressum</a>
+            <a href="/datenschutz">Datenschutz</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // --- Header: Schatten beim Scrollen ---
+      const header = document.getElementById('siteHeader');
+      const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // --- Mobile Navigation ---
+      const toggle = document.getElementById('navToggle');
+      toggle?.addEventListener('click', () => {
+        const open = header?.classList.toggle('is-open') ?? false;
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+      });
+
+      document.getElementById('mainNav')?.addEventListener('click', (event) => {
+        if (event.target instanceof Element && event.target.closest('a')) {
+          header?.classList.remove('is-open');
+          toggle?.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // --- Scroll-Reveal ---
+      const revealItems = document.querySelectorAll('[data-reveal]');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduced || !('IntersectionObserver' in window)) {
+        revealItems.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        let observerFired = false;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            observerFired = true;
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.12 },
+        );
+
+        revealItems.forEach((el) => observer.observe(el));
+
+        // Sicherheitsnetz: sollte der Observer nie auslösen, wird der Inhalt trotzdem sichtbar.
+        window.addEventListener('load', () => {
+          window.setTimeout(() => {
+            if (!observerFired) revealItems.forEach((el) => el.classList.add('is-visible'));
+          }, 1200);
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60" role="img" aria-label="TerraStein">
+  <g fill="#1E3D2B">
+    <rect x="6" y="16" width="13" height="13" rx="2"/>
+    <rect x="21" y="16" width="20" height="13" rx="2" opacity=".55"/>
+    <rect x="6" y="31" width="20" height="13" rx="2" opacity=".55"/>
+    <rect x="28" y="31" width="13" height="13" rx="2"/>
+    <text x="54" y="30" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19" font-weight="700" letter-spacing="-.4">TerraStein</text>
+    <text x="55" y="43" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="9" letter-spacing="2.4" opacity=".65">NATURSTEIN</text>
+  </g>
+</svg>

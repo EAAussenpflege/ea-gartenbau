@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60" role="img" aria-label="FloraPlus">
+  <g fill="#1E3D2B">
+    <path d="M24 44c0-11 7-19 18-20-1 12-8 20-18 20z"/>
+    <path d="M24 44C24 33 17 25 6 24c1 12 8 20 18 20z" opacity=".55"/>
+    <rect x="22.5" y="30" width="3" height="16" rx="1.5"/>
+    <text x="54" y="30" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="19" font-weight="700" letter-spacing="-.4">FloraPlus</text>
+    <text x="55" y="43" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="9" letter-spacing="2.4" opacity=".65">BAUMSCHULE</text>
+  </g>
+</svg>
