@@ -25,13 +25,6 @@ const services = [
     featured: true,
   },
   {
-    title: 'Fenster- & PV-Reinigung',
-    text: 'Streifenfrei saubere Fenster und Photovoltaikmodule mit entmineralisiertem Wasser – mehr Licht, mehr Ertrag.',
-    image: '/images/leistung-fenster.jpg',
-    tags: ['Glasreinigung', 'Solarmodule'],
-    featured: false,
-  },
-  {
     title: 'Fassadenreinigung',
     text: 'Schonende Entfernung von Algen, Moos und Grauschleier – Ihre Fassade sieht wieder aus wie am ersten Tag.',
     image: '/images/leistung-fassade.jpg',
@@ -44,7 +37,7 @@ const benefits = [
   {
     icon: '🌿',
     title: 'Alles aus einer Hand',
-    text: 'Garten, Fenster, Photovoltaik und Fassade – ein Ansprechpartner statt vier Firmen und vier Terminen.',
+    text: 'Garten, Grünpflege und Fassade – ein Ansprechpartner statt drei Firmen und drei Terminen.',
   },
   {
     icon: '🛠️',
@@ -146,7 +139,7 @@ const faqs = [
 
 <BaseLayout
   title="EA-Außenpflege | Garten- & Landschaftsbau, Gartenpflege und Reinigung"
-  description="EA-Außenpflege ist Ihr Partner für Garten- und Landschaftsbau, Gartenpflege sowie die Reinigung von Fenstern, Photovoltaikanlagen und Fassaden in Weinheim und Umgebung. Jetzt kostenloses Angebot anfordern."
+  description="EA-Außenpflege ist Ihr Partner für Garten- und Landschaftsbau, Gartenpflege sowie Fassadenreinigung in Weinheim und Umgebung. Jetzt kostenloses Angebot anfordern."
 >
   <!-- ============================ HERO ============================ -->
   <section class="hero">
@@ -172,8 +165,7 @@ const faqs = [
 
       <p class="hero__text animate-in" style="--delay: 260ms">
         Garten- und Landschaftsbau, regelmäßige Pflege und die professionelle Reinigung von
-        Fenstern, Photovoltaikanlagen und Fassaden – alles von einem Team, das anpackt und
-        mitdenkt.
+        Fassaden – alles von einem Team, das anpackt und mitdenkt.
       </p>
 
       <div class="btn-row animate-in" style="--delay: 360ms">
@@ -234,7 +226,7 @@ const faqs = [
     <div class="container">
       <div class="section-head" data-reveal>
         <span class="eyebrow">Unsere Leistungen</span>
-        <h2>Vier Leistungen, ein Ansprechpartner</h2>
+        <h2>Drei Leistungen, ein Ansprechpartner</h2>
         <p>
           Der Schwerpunkt liegt im Garten- und Landschaftsbau. Rundum sauber wird es mit unseren
           ergänzenden Reinigungsleistungen.
@@ -723,7 +715,7 @@ const faqs = [
   /* ========================= LEISTUNGEN ========================= */
   .services {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: clamp(1.25rem, 2.4vw, 1.9rem);
   }
 
