@@ -1,20 +1,355 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const leistungen = [
+  {
+    id: 'garten-landschaftsbau',
+    kicker: 'Kerngeschäft',
+    title: 'Garten- & Landschaftsbau',
+    image: '/images/leistung-galabau.jpg',
+    einleitung:
+      'Vom ersten Aufmaß bis zur letzten Pflanze: Wir gestalten Außenbereiche neu oder bauen einzelne Bereiche um. Dabei kümmern wir uns um alles, was dazugehört – auch um den Unterbau, den später niemand mehr sieht, von dem aber abhängt, wie lange das Ergebnis hält.',
+    umfang: [
+      'Terrassen aus Naturstein, Beton oder Holz',
+      'Wege und Einfahrten, Pflaster- und Plattenarbeiten',
+      'Trockenmauern, Sitzmauern und Hangbefestigungen',
+      'Zäune, Sichtschutz und Hecken als Abgrenzung',
+      'Rollrasen und Rasenneuanlage',
+      'Beetanlagen, Bepflanzung und Baumsetzungen',
+      'Entwässerung, Randeinfassungen und Unterbau',
+    ],
+    hinweis:
+      'Größere Projekte planen wir gemeinsam in Etappen, damit Ihr Garten nicht monatelang Baustelle ist.',
+  },
+  {
+    id: 'gartenpflege',
+    kicker: 'Kerngeschäft',
+    title: 'Gartenpflege',
+    image: '/images/leistung-pflege.jpg',
+    einleitung:
+      'Ob einmalig zum Saisonstart oder das ganze Jahr über: Wir halten Ihren Garten in Form. Für regelmäßige Pflege vereinbaren wir feste Termine und einen Pauschalpreis – dann müssen Sie sich um nichts mehr kümmern.',
+    umfang: [
+      'Rasen mähen, vertikutieren, düngen und nachsäen',
+      'Hecken schneiden und in Form halten',
+      'Baum- und Strauchschnitt',
+      'Beetpflege, Unkrautentfernung und Mulchen',
+      'Laubbeseitigung im Herbst',
+      'Winterdienst auf Wegen und Zufahrten',
+      'Fachgerechte Entsorgung des Grünschnitts',
+    ],
+    hinweis:
+      'Im Pflegevertrag legen wir Umfang und Rhythmus gemeinsam fest – zum Beispiel alle 14 Tage in der Saison, zu einem festen Monatspreis.',
+  },
+  {
+    id: 'fassadenreinigung',
+    kicker: 'Ergänzend',
+    title: 'Fassadenreinigung',
+    image: '/images/leistung-fassade.jpg',
+    einleitung:
+      'Algen, Moos und der graue Schleier der Jahre lassen ein gepflegtes Haus alt aussehen. Wir reinigen schonend – mit dem richtigen Druck für den jeweiligen Untergrund, damit der Putz keinen Schaden nimmt.',
+    umfang: [
+      'Entfernung von Algen, Moos und Grünbelag',
+      'Beseitigung von Grauschleier und Witterungsspuren',
+      'Schonende Reinigung mit angepasstem Druck',
+      'Reinigung von Terrassen, Wegen und Einfahrten',
+      'Sockelbereiche und Mauern',
+    ],
+    hinweis:
+      'Wir sehen uns die Fassade vorab an und sagen Ihnen ehrlich, ob eine Reinigung ausreicht oder ob ein Malerbetrieb der richtige Ansprechpartner ist.',
+  },
+];
+
+const ablauf = [
+  {
+    number: '01',
+    title: 'Anfrage',
+    text: 'Sie schildern uns Ihr Vorhaben – telefonisch, über WhatsApp oder das Kontaktformular.',
+  },
+  {
+    number: '02',
+    title: 'Termin vor Ort',
+    text: 'Wir schauen uns die Situation an, beraten Sie und nehmen die nötigen Maße. Kostenlos und unverbindlich.',
+  },
+  {
+    number: '03',
+    title: 'Angebot',
+    text: 'Sie erhalten ein schriftliches Angebot – als Festpreis für das Projekt oder als Pauschale für die laufende Pflege.',
+  },
+  {
+    number: '04',
+    title: 'Umsetzung',
+    text: 'Zum vereinbarten Termin legen wir los. Am Ende übergeben wir besenrein.',
+  },
+];
 ---
 
 <BaseLayout
   title="Unsere Dienstleistungen | EA-Außenpflege"
-  description="Garten- und Landschaftsbau, Gartenpflege und Fassadenreinigung – alle Leistungen von EA-Außenpflege im Überblick."
+  description="Garten- und Landschaftsbau, Gartenpflege und Fassadenreinigung in Weinheim und Umgebung – alle Leistungen von EA-Außenpflege im Detail."
 >
   <section class="page-hero">
     <div class="container">
       <span class="eyebrow">Leistungen</span>
       <h1>Unsere Dienstleistungen</h1>
-      <p>Alle Leistungen rund um Garten, Glas und Fassade im Detail.</p>
+      <p>
+        Drei Bereiche, ein Ansprechpartner – vom Neubau der Terrasse bis zur Pflege über die ganze
+        Saison.
+      </p>
     </div>
   </section>
 
-  <section class="container page-body">
-    <p class="notice"><span aria-hidden="true">🌱</span> Inhalt folgt</p>
+  <!-- ====================== SPRUNGNAVIGATION ====================== -->
+  <section class="sprungnav">
+    <div class="container">
+      <ul>
+        {
+          leistungen.map((leistung) => (
+            <li>
+              <a href={`#${leistung.id}`}>{leistung.title}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ========================= LEISTUNGEN ========================= -->
+  {
+    leistungen.map((leistung, index) => (
+      <section
+        class:list={['section', { 'section--tint': index % 2 === 1 }]}
+        id={leistung.id}
+      >
+        <div class:list={['container', 'leistung-grid', { 'leistung-grid--gedreht': index % 2 === 1 }]}>
+          <div class="leistung-media" data-reveal={index % 2 === 1 ? 'right' : 'left'}>
+            <img src={leistung.image} alt={leistung.title} width="800" height="600" loading="lazy" />
+          </div>
+
+          <div class="leistung-text" data-reveal={index % 2 === 1 ? 'left' : 'right'}>
+            <span class="eyebrow">{leistung.kicker}</span>
+            <h2>{leistung.title}</h2>
+            <p class="lead">{leistung.einleitung}</p>
+
+            <h3>Was dazugehört</h3>
+            <ul class="haken-liste">
+              {leistung.umfang.map((punkt) => (
+                <li>{punkt}</li>
+              ))}
+            </ul>
+
+            <p class="leistung-hinweis">{leistung.hinweis}</p>
+
+            <a class="btn btn--primary btn--sm" href="/kontakt">
+              Angebot anfordern <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <!-- =========================== ABLAUF =========================== -->
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Ablauf</span>
+        <h2>So läuft die Zusammenarbeit</h2>
+        <p>Vier Schritte, keine Überraschungen.</p>
+      </div>
+
+      <ol class="ablauf">
+        {
+          ablauf.map((schritt, index) => (
+            <li class="ablauf__schritt" data-reveal style={`--reveal-delay: ${index * 90}ms`}>
+              <span class="ablauf__nummer">{schritt.number}</span>
+              <h3>{schritt.title}</h3>
+              <p>{schritt.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============================ PREISE ========================== -->
+  <section class="section">
+    <div class="container preis-box" data-reveal>
+      <span class="eyebrow">Preise</span>
+      <h2>Festpreis oder Pauschale – Sie entscheiden</h2>
+      <p class="lead">
+        Für einzelne Projekte nennen wir Ihnen einen <strong>Festpreis</strong>: Was im Angebot
+        steht, gilt. Für laufende Pflege vereinbaren wir eine <strong>Pauschale</strong> mit festen
+        Terminen und einem gleichbleibenden Monatsbetrag.
+      </p>
+      <p>
+        Beratung, Vor-Ort-Termin und Angebot sind in beiden Fällen kostenlos und unverbindlich.
+      </p>
+
+      <div class="btn-row">
+        <a class="btn btn--primary" href="/kontakt">
+          Kostenloses Angebot anfordern <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--ghost" href="tel:+4917621190179">Oder anrufen: 0176 21190179</a>
+      </div>
+    </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* ====================== SPRUNGNAVIGATION ====================== */
+  .sprungnav {
+    border-bottom: 1px solid var(--line);
+    background: var(--white);
+  }
+
+  .sprungnav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+  }
+
+  .sprungnav a {
+    display: inline-block;
+    padding: 0.5rem 1.1rem;
+    border-radius: var(--radius-pill);
+    background: var(--green-soft);
+    color: var(--green-700);
+    font-size: 0.92rem;
+    font-weight: 600;
+    transition: background 0.25s ease;
+  }
+
+  .sprungnav a:hover {
+    background: var(--green);
+    color: var(--white);
+  }
+
+  /* ========================= LEISTUNGEN ========================= */
+  .leistung-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .leistung-grid--gedreht .leistung-media {
+    order: 2;
+  }
+
+  .leistung-media img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  .leistung-text h2 {
+    font-size: var(--fs-h2);
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .leistung-text h3 {
+    font-size: 1.05rem;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .haken-liste {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .haken-liste li {
+    position: relative;
+    padding-left: 1.9rem;
+    color: var(--ink-muted);
+  }
+
+  .haken-liste li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 1.1rem;
+    height: 0.55rem;
+    border-left: 2.5px solid var(--green);
+    border-bottom: 2.5px solid var(--green);
+    transform: rotate(-45deg);
+  }
+
+  .leistung-hinweis {
+    margin-top: 1.5rem;
+    margin-bottom: 1.75rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--green);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    background: var(--green-tint);
+    color: var(--ink-muted);
+    font-size: 0.95rem;
+  }
+
+  /* =========================== ABLAUF =========================== */
+  .ablauf {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: clamp(1.25rem, 3vw, 2rem);
+    list-style: none;
+    padding: 0;
+  }
+
+  .ablauf__nummer {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--green);
+    margin-bottom: 0.75rem;
+  }
+
+  .ablauf__schritt h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .ablauf__schritt p {
+    color: var(--ink-muted);
+  }
+
+  /* ============================ PREISE ========================== */
+  .preis-box {
+    max-width: 760px;
+    text-align: center;
+  }
+
+  .preis-box h2 {
+    font-size: var(--fs-h2);
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .preis-box p + p {
+    margin-top: 1rem;
+    color: var(--ink-muted);
+  }
+
+  .preis-box .btn-row {
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .leistung-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .leistung-grid--gedreht .leistung-media {
+      order: 0;
+    }
+  }
+</style>

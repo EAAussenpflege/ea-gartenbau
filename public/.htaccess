@@ -26,6 +26,14 @@
 # ErrorDocument 404 /404.html
 
 # ---------------------------------------------------------
+# Alte Adressen dauerhaft weiterleiten
+# ---------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^ueber-mich/?$ /ueber-uns/ [R=301,L]
+</IfModule>
+
+# ---------------------------------------------------------
 # Komprimierung – spart Ladezeit bei HTML, CSS und SVG
 # ---------------------------------------------------------
 <IfModule mod_deflate.c>

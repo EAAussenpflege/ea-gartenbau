@@ -13,7 +13,7 @@ const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
 const navLinks = [
   { href: '/', label: 'Startseite' },
   { href: '/dienstleistungen', label: 'Unsere Dienstleistungen' },
-  { href: '/ueber-mich', label: 'Über mich' },
+  { href: '/ueber-uns', label: 'Über uns' },
   { href: '/kontakt', label: 'Kontakt' },
 ];
 
@@ -107,7 +107,7 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
           <div>
             <h4>Unternehmen</h4>
             <ul class="footer-list">
-              <li><a href="/ueber-mich">Über mich</a></li>
+              <li><a href="/ueber-uns">Über uns</a></li>
               <li><a href="/dienstleistungen">Unsere Dienstleistungen</a></li>
               <li><a href="/kontakt">Kontakt</a></li>
             </ul>

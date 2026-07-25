@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const werte = [
+  {
+    icon: '🤝',
+    title: 'Ehrliche Beratung',
+    text: 'Wir sagen Ihnen auch, wenn etwas nicht nötig ist. Ein Angebot, das kleiner ausfällt als erwartet, ist uns lieber als ein Kunde, der sich übervorteilt fühlt.',
+  },
+  {
+    icon: '🧹',
+    title: 'Saubere Übergabe',
+    text: 'Wenn wir gehen, sieht man nur das Ergebnis – nicht den Weg dorthin. Grünschnitt, Aushub und Verpackungen nehmen wir mit.',
+  },
+  {
+    icon: '📅',
+    title: 'Termine, die halten',
+    text: 'Zugesagt ist zugesagt. Wenn das Wetter dazwischenkommt, hören Sie von uns – und nicht erst auf Nachfrage.',
+  },
+  {
+    icon: '👤',
+    title: 'Ein Ansprechpartner',
+    text: 'Sie sprechen von der ersten Anfrage bis zur Übergabe mit derselben Person. Kein Callcenter, keine Weiterleitung.',
+  },
+];
+---
+
+<BaseLayout
+  title="Über uns | EA-Außenpflege"
+  description="EA-Außenpflege ist ein inhabergeführter Familienbetrieb aus Weinheim für Garten- und Landschaftsbau, Gartenpflege und Fassadenreinigung."
+>
+  <section class="page-hero">
+    <div class="container">
+      <span class="eyebrow">Über uns</span>
+      <h1>Der Betrieb hinter der Arbeit</h1>
+      <p>
+        Ein kleiner Familienbetrieb aus Weinheim – mit dem Anspruch, dass man am Ergebnis sieht,
+        wer da war.
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================= GESCHICHTE ========================= -->
+  <section class="section">
+    <div class="container ueber-grid">
+      <div class="ueber-media" data-reveal="left">
+        <img
+          src="/images/team.jpg"
+          alt="Zwei Mitarbeiter von EA-Außenpflege bei der Pflanzarbeit"
+          width="900"
+          height="900"
+          loading="lazy"
+        />
+        <div class="ueber-badge">
+          <strong>seit 2023</strong>
+          <span>im Familienbetrieb</span>
+        </div>
+      </div>
+
+      <div class="ueber-text" data-reveal="right">
+        <span class="eyebrow">Wie alles anfing</span>
+        <h2>Angefangen mit einem Anhänger</h2>
+        <p class="lead">
+          EA-Außenpflege ist ein inhabergeführtes Einzelunternehmen aus Weinheim, gegründet 2023
+          von Albin Spahiu-Latifi – mit einem Anhänger, dem nötigen Werkzeug und der Überzeugung,
+          dass gute Arbeit im Grünen keine große Firma braucht, sondern Sorgfalt.
+        </p>
+        <p>
+          Angefangen haben wir mit Gartenpflege für Nachbarn und Bekannte. Weil die Kunden
+          wiederkamen und uns weiterempfahlen, kamen Pflasterarbeiten, Terrassen und ganze
+          Gartenneuanlagen dazu. Heute betreuen wir Privatgärten, Wohnanlagen und Gewerbeobjekte
+          in Weinheim und der Umgebung.
+        </p>
+        <p>
+          Was sich nicht geändert hat: Wir nehmen nur so viele Aufträge an, wie wir auch wirklich
+          gut betreuen können. Lieber sagen wir einen Termin ehrlich ab, als ihn schlecht zu
+          erledigen.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== WERTE =========================== -->
+  <section class="section section--tint">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Wofür wir stehen</span>
+        <h2>Vier Dinge, auf die Sie sich verlassen können</h2>
+      </div>
+
+      <div class="werte">
+        {
+          werte.map((wert, index) => (
+            <article class="card wert" data-reveal style={`--reveal-delay: ${index * 80}ms`}>
+              <span class="wert__icon" aria-hidden="true">
+                {wert.icon}
+              </span>
+              <h3>{wert.title}</h3>
+              <p>{wert.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================== EINSATZGEBIET ======================= -->
+  <section class="section">
+    <div class="container ueber-schmal" data-reveal>
+      <span class="eyebrow">Einsatzgebiet</span>
+      <h2>Zu Hause in Weinheim und Umgebung</h2>
+      <p class="lead">
+        Wir arbeiten dort, wo wir auch kurzfristig vorbeikommen können – das gehört zu unserem
+        Versprechen. Bei größeren Projekten kommen wir auf Anfrage auch weiter. Fragen Sie
+        einfach, wir sagen Ihnen ehrlich, ob es passt.
+      </p>
+
+      <div class="btn-row">
+        <a class="btn btn--primary" href="/kontakt">
+          Kostenloses Angebot anfordern <span class="arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn--ghost" href="/dienstleistungen">Unsere Leistungen ansehen</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ueber-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .ueber-media {
+    position: relative;
+  }
+
+  .ueber-media img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  .ueber-badge {
+    position: absolute;
+    right: 1rem;
+    bottom: clamp(1.5rem, 4vw, 2.5rem);
+    display: grid;
+    gap: 0.1rem;
+    padding: 1rem 1.4rem;
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+
+  .ueber-badge strong {
+    font-size: 1.25rem;
+    color: var(--green-700);
+  }
+
+  .ueber-badge span {
+    font-size: 0.82rem;
+    color: var(--ink-muted);
+  }
+
+  .ueber-text h2 {
+    font-size: var(--fs-h2);
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .ueber-text p + p {
+    margin-top: 1rem;
+  }
+
+  .werte {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: clamp(1.1rem, 2vw, 1.6rem);
+  }
+
+  .wert__icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.4rem;
+    border-radius: var(--radius-sm);
+    background: var(--green-soft);
+    margin-bottom: 1rem;
+  }
+
+  .wert h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .wert p {
+    color: var(--ink-muted);
+  }
+
+  .ueber-schmal {
+    max-width: 720px;
+    text-align: center;
+  }
+
+  .ueber-schmal h2 {
+    font-size: var(--fs-h2);
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .ueber-schmal .btn-row {
+    justify-content: center;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .ueber-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
