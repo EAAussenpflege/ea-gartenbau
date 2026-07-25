@@ -40,7 +40,40 @@ gehört dorthin und darf nicht gelöscht werden.
 
 ---
 
-## Variante B – Manuell per FTP
+> **Bekanntes Problem:** Die GitHub-Action scheitert bisher mit
+> `Timeout (control socket)`. Die Verbindung zu Port 21 kommt vom
+> GitHub-Runner aus gar nicht zustande – vermutlich blockiert STRATO
+> FTP-Zugriffe aus Rechenzentren. Bis das geklärt ist, funktioniert
+> **Variante B** zuverlässig.
+
+---
+
+## Variante B – Ein Befehl vom eigenen Rechner
+
+Baut die Seite und lädt sie direkt hoch – ohne Umweg über GitHub, deshalb
+unabhängig von etwaigen IP-Sperren.
+
+### Einmalige Einrichtung
+
+1. Datei `.env.example` kopieren, die Kopie in `.env` umbenennen
+2. In `.env` die Zugangsdaten aus dem STRATO-Kundenlogin eintragen
+
+Die Datei `.env` ist über `.gitignore` ausgeschlossen und landet nie auf
+GitHub. Zugangsdaten gehören ausschließlich dorthin – niemals in eine Datei,
+die eingecheckt wird.
+
+### Deployen
+
+```bash
+npm run deploy
+```
+
+Das baut die Seite neu und lädt anschließend alles aus `dist/` hoch. Jede
+übertragene Datei wird einzeln aufgelistet.
+
+---
+
+## Variante C – Manuell per FileZilla
 
 ```bash
 npm run build
