@@ -42,13 +42,25 @@ jobs:
       - name: Seite bauen
         run: npm run build
 
+      # STRATO ist per IPv4 und IPv6 erreichbar, die GitHub-Runner haben aber
+      # kein IPv6-Netz. Ohne diesen Schritt versucht Node zuerst die
+      # IPv6-Adresse und bricht mit ENETUNREACH ab. Wir schlagen die
+      # IPv4-Adresse nach und tragen sie fest in /etc/hosts ein – so bleibt
+      # der Hostname erhalten (wichtig fuer das FTPS-Zertifikat).
+      - name: STRATO auf IPv4 festlegen
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        run: |
+          IPV4=$(getent ahostsv4 "$FTP_SERVER" | awk '{ print $1; exit }')
+          if [ -z "$IPV4" ]; then
+            echo "Keine IPv4-Adresse fuer den FTP-Server gefunden."
+            exit 1
+          fi
+          echo "IPv4-Adresse gefunden: $IPV4"
+          echo "$IPV4 $FTP_SERVER" | sudo tee -a /etc/hosts > /dev/null
+
       - name: Per FTP zu STRATO hochladen
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-        # STRATO ist per IPv4 und IPv6 erreichbar, die GitHub-Runner haben
-        # aber kein IPv6-Netz. Ohne diese Zeile versucht Node zuerst die
-        # IPv6-Adresse und bricht mit ENETUNREACH ab.
-        env:
-          NODE_OPTIONS: --dns-result-order=ipv4first
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
