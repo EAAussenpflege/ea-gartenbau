@@ -61,5 +61,6 @@ AddDefaultCharset UTF-8
   Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
-# Verzeichnisauflistung unterbinden
-Options -Indexes
+# Hinweis: "Options -Indexes" wurde entfernt. Viele Hoster erlauben die
+# Options-Anweisung in der .htaccess nicht und antworten dann mit
+# 500 Internal Server Error.
