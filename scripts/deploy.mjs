@@ -81,24 +81,18 @@ try {
     console.log('  Datenkanal auf unverschlüsselt umgestellt.');
   }
 
-  // Je nachdem, wie das FTP-Konto eingerichtet ist, landet man nach dem
-  // Login entweder im Home-Verzeichnis (dann muss nach public_html
-  // gewechselt werden) oder bereits direkt darin. Beides wird abgedeckt.
-  phase = 'Zielverzeichnis bestimmen';
+  // Kein stillschweigendes Ausweichen: Wenn das Zielverzeichnis nicht
+  // existiert, wird abgebrochen. Sonst landen die Dateien irgendwo auf
+  // dem Server, der Upload meldet Erfolg und die Website bleibt alt.
+  phase = `Wechsel ins Zielverzeichnis (${FTP_DIR})`;
 
   try {
     await client.cd(FTP_DIR);
   } catch {
-    const eintraege = await client.list();
-    const hatPublicHtml = eintraege.some(
-      (eintrag) => eintrag.isDirectory && eintrag.name === 'public_html',
+    throw new Error(
+      `Das Verzeichnis ${FTP_DIR} existiert auf dem Server nicht. ` +
+        'Bitte FTP_DIR in der .env korrigieren.',
     );
-
-    if (hatPublicHtml) {
-      await client.cd('public_html');
-    } else {
-      console.log(`  Hinweis: ${FTP_DIR} existiert nicht – lade ins aktuelle Verzeichnis.`);
-    }
   }
 
   console.log(`  Zielverzeichnis: ${await client.pwd()}\n`);
