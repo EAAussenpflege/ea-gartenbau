@@ -1,20 +1,482 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const telefon = '0176 21190179';
+const telefonLink = 'tel:+4917621190179';
+const whatsappLink = 'https://wa.me/4917621190179';
+const email = 'kontakt@ea-aussenpflege.de';
+
+// Schlüssel von web3forms.com – wird in der .env hinterlegt als
+// PUBLIC_WEB3FORMS_KEY=... Ohne Schlüssel wird statt des Formulars
+// ein Hinweis angezeigt, damit die Seite nie kaputt aussieht.
+const formularSchluessel = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+
+const kontaktwege = [
+  {
+    icon: '📞',
+    title: 'Anrufen',
+    text: 'Am schnellsten geht es telefonisch. Wir gehen ran, solange wir nicht gerade auf der Leiter stehen.',
+    linkText: telefon,
+    href: telefonLink,
+  },
+  {
+    icon: '💬',
+    title: 'WhatsApp',
+    text: 'Schicken Sie uns einfach ein Foto von Ihrem Garten – oft können wir schon vorab einschätzen, worum es geht.',
+    linkText: 'Chat öffnen',
+    href: whatsappLink,
+  },
+  {
+    icon: '✉️',
+    title: 'E-Mail',
+    text: 'Lieber schriftlich? Wir antworten in der Regel innerhalb von 12 Stunden.',
+    linkText: email,
+    href: `mailto:${email}`,
+  },
+];
 ---
 
 <BaseLayout
   title="Kontakt | EA-Außenpflege"
-  description="Kontaktieren Sie EA-Außenpflege für ein kostenloses Angebot zu Garten- und Landschaftsbau, Gartenpflege oder Reinigungsleistungen. Antwort innerhalb von 12 Stunden."
+  description="Kontaktieren Sie EA-Außenpflege für ein kostenloses Angebot zu Garten- und Landschaftsbau, Gartenpflege oder Fassadenreinigung in Weinheim und Umgebung. Antwort innerhalb von 12 Stunden."
 >
   <section class="page-hero">
     <div class="container">
       <span class="eyebrow">Kontakt</span>
-      <h1>Kontakt</h1>
-      <p>Schreiben Sie uns – wir melden uns innerhalb von 12 Stunden zurück.</p>
+      <h1>Lassen Sie uns sprechen</h1>
+      <p>
+        Erzählen Sie uns kurz, worum es geht. Die Beratung vor Ort ist kostenlos und
+        unverbindlich – und wir melden uns innerhalb von 12 Stunden.
+      </p>
     </div>
   </section>
 
-  <section class="container page-body">
-    <p class="notice"><span aria-hidden="true">🌱</span> Inhalt folgt</p>
+  <!-- ====================== KONTAKTWEGE ====================== -->
+  <section class="section">
+    <div class="container">
+      <div class="kontaktwege">
+        {
+          kontaktwege.map((weg, index) => (
+            <article class="card kontaktweg" data-reveal style={`--reveal-delay: ${index * 80}ms`}>
+              <span class="kontaktweg__icon" aria-hidden="true">
+                {weg.icon}
+              </span>
+              <h2>{weg.title}</h2>
+              <p>{weg.text}</p>
+              <a
+                class="link-arrow"
+                href={weg.href}
+                rel={weg.href.startsWith('http') ? 'noopener' : undefined}
+                target={weg.href.startsWith('http') ? '_blank' : undefined}
+              >
+                {weg.linkText} <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ================== FORMULAR & ECKDATEN ================== -->
+  <section class="section section--tint">
+    <div class="container kontakt-grid">
+      <div class="kontakt-formular" data-reveal="left">
+        <span class="eyebrow">Anfrage senden</span>
+        <h2>Schreiben Sie uns</h2>
+        <p class="lead">
+          Je mehr wir vorab wissen, desto genauer wird das Angebot. Pflichtfelder sind mit
+          <span aria-hidden="true">*</span> markiert.
+        </p>
+
+        {
+          formularSchluessel ? (
+            <form
+              id="kontaktFormular"
+              action="https://api.web3forms.com/submit"
+              method="POST"
+              novalidate
+            >
+              <input type="hidden" name="access_key" value={formularSchluessel} />
+              <input
+                type="hidden"
+                name="subject"
+                value="Neue Anfrage über ea-gartenbau-pflege.de"
+              />
+              <input type="hidden" name="from_name" value="Website EA-Außenpflege" />
+
+              {/* Honigtopf gegen Spam-Bots – für Menschen unsichtbar */}
+              <input type="checkbox" name="botcheck" class="honigtopf" tabindex="-1" autocomplete="off" />
+
+              <div class="feld-reihe">
+                <p class="feld">
+                  <label for="name">Name *</label>
+                  <input id="name" name="name" type="text" required autocomplete="name" />
+                </p>
+                <p class="feld">
+                  <label for="telefon">Telefon</label>
+                  <input id="telefon" name="telefon" type="tel" autocomplete="tel" />
+                </p>
+              </div>
+
+              <div class="feld-reihe">
+                <p class="feld">
+                  <label for="email">E-Mail *</label>
+                  <input id="email" name="email" type="email" required autocomplete="email" />
+                </p>
+                <p class="feld">
+                  <label for="leistung">Worum geht es?</label>
+                  <select id="leistung" name="leistung">
+                    <option>Garten- &amp; Landschaftsbau</option>
+                    <option>Gartenpflege</option>
+                    <option>Fassadenreinigung</option>
+                    <option>Etwas anderes</option>
+                  </select>
+                </p>
+              </div>
+
+              <p class="feld">
+                <label for="nachricht">Ihre Nachricht *</label>
+                <textarea id="nachricht" name="nachricht" rows="6" required></textarea>
+              </p>
+
+              <p class="feld feld--check">
+                <input id="datenschutz" name="datenschutz" type="checkbox" required />
+                <label for="datenschutz">
+                  Ich habe die <a href="/datenschutz">Datenschutzerklärung</a> gelesen und bin
+                  mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage
+                  einverstanden. *
+                </label>
+              </p>
+
+              <button class="btn btn--primary" type="submit">
+                Anfrage senden <span class="arrow" aria-hidden="true">→</span>
+              </button>
+
+              <p class="formular-meldung" id="formularMeldung" role="status" aria-live="polite"></p>
+            </form>
+          ) : (
+            <div class="hinweis">
+              <strong>Formular noch nicht aktiv.</strong>
+              <p>
+                Es fehlt der Zugangsschlüssel von web3forms.com. Bis dahin erreichen Sie uns
+                telefonisch unter <a href={telefonLink}>{telefon}</a> oder per E-Mail an{' '}
+                <a href={`mailto:${email}`}>{email}</a>.
+              </p>
+            </div>
+          )
+        }
+      </div>
+
+      <aside class="kontakt-fakten" data-reveal="right">
+        <div class="card">
+          <h3>Einsatzgebiet</h3>
+          <p>
+            Weinheim und Umgebung. Bei größeren Projekten kommen wir auf Anfrage auch weiter –
+            sprechen Sie uns einfach an.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Erreichbarkeit</h3>
+          <ul class="fakten-liste">
+            <li><span>Mo–Fr</span><strong>07:00–17:00 Uhr</strong></li>
+            <li><span>Sa</span><strong>nach Absprache</strong></li>
+            <li><span>Antwortzeit</span><strong>max. 12 Stunden</strong></li>
+          </ul>
+        </div>
+
+        <div class="card card--gruen">
+          <h3>Kostenlos &amp; unverbindlich</h3>
+          <p>
+            Vor-Ort-Termin, Beratung und Angebot kosten Sie nichts. Sie entscheiden danach in
+            Ruhe – als Festpreis oder Pauschale.
+          </p>
+          <a class="btn btn--primary btn--sm" href={telefonLink}>
+            {telefon}
+          </a>
+        </div>
+      </aside>
+    </div>
   </section>
 </BaseLayout>
+
+<style>
+  /* ======================= KONTAKTWEGE ======================= */
+  .kontaktwege {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(1.1rem, 2vw, 1.6rem);
+  }
+
+  .kontaktweg {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+
+  .kontaktweg__icon {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.4rem;
+    border-radius: var(--radius-sm);
+    background: var(--green-soft);
+  }
+
+  .kontaktweg h2 {
+    font-size: 1.2rem;
+  }
+
+  .kontaktweg p {
+    color: var(--ink-muted);
+    flex: 1;
+  }
+
+  /* ==================== FORMULAR & ASIDE ==================== */
+  .kontakt-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(1.75rem, 4vw, 3.5rem);
+    align-items: start;
+  }
+
+  .kontakt-formular h2 {
+    font-size: var(--fs-h2);
+    margin-top: 0.4rem;
+  }
+
+  .kontakt-formular .lead {
+    margin-bottom: 2rem;
+  }
+
+  .feld-reihe {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0 1.1rem;
+  }
+
+  .feld {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .feld label {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--green-dark);
+  }
+
+  .feld input,
+  .feld select,
+  .feld textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    font: inherit;
+    color: var(--ink);
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+
+  .feld textarea {
+    resize: vertical;
+    min-height: 8rem;
+  }
+
+  .feld input:focus-visible,
+  .feld select:focus-visible,
+  .feld textarea:focus-visible {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 4px rgba(92, 184, 92, 0.18);
+  }
+
+  .feld--check {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin-bottom: 1.6rem;
+  }
+
+  .feld--check input {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.15rem;
+    flex: none;
+    accent-color: var(--green);
+  }
+
+  .feld--check label {
+    font-weight: 400;
+    font-size: 0.92rem;
+    color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  .feld--check a {
+    color: var(--green-700);
+    text-decoration: underline;
+  }
+
+  /* Für Menschen unsichtbar, für Bots verlockend */
+  .honigtopf {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+  }
+
+  .formular-meldung {
+    margin-top: 1rem;
+    font-weight: 600;
+  }
+
+  .formular-meldung[data-status='ok'] {
+    color: var(--green-700);
+  }
+
+  .formular-meldung[data-status='fehler'] {
+    color: #b3261e;
+  }
+
+  .hinweis {
+    padding: 1.5rem;
+    border: 1px dashed var(--green);
+    border-radius: var(--radius);
+    background: var(--white);
+  }
+
+  .hinweis p {
+    margin-top: 0.5rem;
+    color: var(--ink-muted);
+  }
+
+  .hinweis a {
+    color: var(--green-700);
+    font-weight: 600;
+  }
+
+  /* ========================= ASIDE ========================= */
+  .kontakt-fakten {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .kontakt-fakten h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .kontakt-fakten p {
+    color: var(--ink-muted);
+  }
+
+  .card--gruen {
+    background: linear-gradient(135deg, var(--green-dark) 0%, #2b5a3d 100%);
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .card--gruen h3 {
+    color: #fff;
+  }
+
+  .card--gruen p {
+    color: rgba(255, 255, 255, 0.82);
+    margin-bottom: 1.2rem;
+  }
+
+  .fakten-liste {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .fakten-liste li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .fakten-liste li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .fakten-liste span {
+    color: var(--ink-muted);
+  }
+
+  .fakten-liste strong {
+    color: var(--green-dark);
+  }
+
+  @media (max-width: 900px) {
+    .kontakt-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Formular per fetch abschicken, damit der Besucher auf der Seite bleibt.
+  // Ohne JavaScript funktioniert das Formular weiterhin als normaler POST.
+  const formular = document.querySelector<HTMLFormElement>('#kontaktFormular');
+  const meldung = document.querySelector<HTMLParagraphElement>('#formularMeldung');
+
+  if (formular && meldung) {
+    formular.addEventListener('submit', async (ereignis) => {
+      if (!formular.checkValidity()) {
+        formular.reportValidity();
+        return;
+      }
+
+      ereignis.preventDefault();
+
+      const knopf = formular.querySelector<HTMLButtonElement>('button[type="submit"]');
+      const beschriftung = knopf?.innerHTML ?? '';
+
+      if (knopf) {
+        knopf.disabled = true;
+        knopf.textContent = 'Wird gesendet …';
+      }
+
+      meldung.textContent = '';
+      meldung.removeAttribute('data-status');
+
+      try {
+        const antwort = await fetch(formular.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(formular),
+        });
+
+        if (!antwort.ok) throw new Error(String(antwort.status));
+
+        formular.reset();
+        meldung.dataset.status = 'ok';
+        meldung.textContent =
+          'Vielen Dank! Ihre Anfrage ist angekommen – wir melden uns innerhalb von 12 Stunden.';
+      } catch {
+        meldung.dataset.status = 'fehler';
+        meldung.textContent =
+          'Das hat leider nicht geklappt. Rufen Sie uns gerne direkt an: 0176 21190179';
+      } finally {
+        if (knopf) {
+          knopf.disabled = false;
+          knopf.innerHTML = beschriftung;
+        }
+      }
+    });
+  }
+</script>
