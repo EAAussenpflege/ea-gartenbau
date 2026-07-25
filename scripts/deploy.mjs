@@ -46,9 +46,12 @@ if (fehlend.length > 0) {
 // --- Upload -------------------------------------------------------------
 
 const client = new Client(30_000);
-client.ftp.verbose = false;
+
+// Mit FTP_DEBUG=true wird der komplette FTP-Dialog mitgeschrieben.
+client.ftp.verbose = process.env.FTP_DEBUG === 'true';
 
 let hochgeladen = 0;
+let phase = 'Verbindungsaufbau';
 
 client.trackProgress((info) => {
   if (info.type === 'upload' && info.name) {
@@ -68,14 +71,32 @@ try {
     secureOptions: { rejectUnauthorized: false },
   });
 
-  console.log(`  Verbunden. Zielverzeichnis: ${FTP_DIR}\n`);
+  console.log('  Angemeldet.');
 
-  await client.ensureDir(FTP_DIR);
-  await client.uploadFromDir(DIST, FTP_DIR);
+  // FTP_SECURE=control: Anmeldung verschlüsselt, Dateien im Klartext.
+  // Nötig bei Servern, die PROT P nicht unterstützen (Antwort 504).
+  if (FTP_SECURE === 'control') {
+    phase = 'Umschalten auf unverschlüsselten Datenkanal';
+    await client.send('PROT C');
+    console.log('  Datenkanal auf unverschlüsselt umgestellt.');
+  }
+
+  phase = `Wechsel ins Zielverzeichnis (${FTP_DIR})`;
+  if (FTP_DIR !== '/' && FTP_DIR !== '') {
+    await client.ensureDir(FTP_DIR);
+  } else {
+    await client.cd('/');
+  }
+
+  console.log(`  Zielverzeichnis: ${await client.pwd()}\n`);
+
+  phase = 'Dateiübertragung';
+  await client.uploadFromDir(DIST);
 
   console.log(`\n  ✔  Fertig – ${hochgeladen} Dateien hochgeladen.\n`);
 } catch (error) {
-  console.error(`\n  ✖  Upload fehlgeschlagen: ${error.message}`);
+  console.error(`\n  ✖  Fehlgeschlagen bei: ${phase}`);
+  console.error(`     ${error.message}\n`);
 
   if (/timeout/i.test(error.message)) {
     console.error(
@@ -84,13 +105,25 @@ try {
     );
   }
 
-  if (/530|login|credential/i.test(error.message)) {
+  if (/530|login|credential|password/i.test(error.message)) {
     console.error('     Benutzername oder Passwort werden abgelehnt.');
   }
 
-  if (/certificate|self.signed|TLS/i.test(error.message)) {
+  if (/504|PROT|PBSZ/i.test(error.message)) {
+    console.error(
+      '     STRATO lehnt den verschlüsselten Datenkanal ab.\n' +
+        '     Setze in der .env FTP_SECURE=false und versuche es erneut.',
+    );
+  }
+
+  if (/certificate|self.signed|TLS|SSL/i.test(error.message)) {
     console.error('     TLS-Problem – zum Testen FTP_SECURE=false in .env setzen.');
   }
+
+  console.error(
+    '\n     Für den vollständigen Protokollverlauf:\n' +
+      '     $env:FTP_DEBUG="true"; npm.cmd run deploy\n',
+  );
 
   process.exitCode = 1;
 } finally {

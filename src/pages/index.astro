@@ -4,7 +4,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const partners = [
   { src: '/images/logos/terrastein.svg', alt: 'TerraStein Naturstein' },
   { src: '/images/logos/floraplus.svg', alt: 'FloraPlus Baumschule' },
-  { src: '/images/logos/meisterbetrieb.svg', alt: 'Geprüfter Meisterbetrieb' },
   { src: '/images/logos/gruenwerk.svg', alt: 'GrünWerk Maschinen' },
   { src: '/images/logos/hortitec.svg', alt: 'HortiTec Bewässerung' },
   { src: '/images/logos/stadtgruen.svg', alt: 'Stadtgrün Kommunal Service' },
@@ -48,19 +47,19 @@ const benefits = [
     text: 'Garten, Fenster, Photovoltaik und Fassade – ein Ansprechpartner statt vier Firmen und vier Terminen.',
   },
   {
-    icon: '🎓',
-    title: 'Meisterqualität',
-    text: 'Ausgebildete Fachkräfte, saubere Ausführung und Materialien, die auch in zehn Jahren noch überzeugen.',
+    icon: '🛠️',
+    title: 'Saubere Ausführung',
+    text: 'Fachgerechte Arbeit und Materialien, die auch in zehn Jahren noch überzeugen.',
   },
   {
     icon: '💬',
     title: 'Fester Ansprechpartner',
-    text: 'Sie erreichen uns direkt – ohne Callcenter, ohne Warteschleife, mit Antwort innerhalb von 24 Stunden.',
+    text: 'Sie erreichen uns direkt – ohne Callcenter, ohne Warteschleife, mit Antwort innerhalb von 12 Stunden.',
   },
   {
     icon: '📄',
-    title: 'Faire Festpreise',
-    text: 'Transparentes Angebot vor Beginn. Was drinsteht, gilt – ohne Überraschungen auf der Rechnung.',
+    title: 'Fest- oder Pauschalpreis',
+    text: 'Sie entscheiden: fester Preis für das einzelne Projekt oder Pauschale für die laufende Pflege. Transparent vor Beginn.',
   },
   {
     icon: '🧹',
@@ -83,7 +82,7 @@ const steps = [
   {
     number: '02',
     title: 'Termin & Angebot vor Ort',
-    text: 'Wir schauen uns Ihren Außenbereich in Ruhe an, beraten Sie ehrlich und erstellen ein verbindliches Festpreisangebot.',
+    text: 'Wir schauen uns Ihren Außenbereich in Ruhe an, beraten Sie ehrlich und erstellen ein verbindliches Angebot – als Festpreis oder Pauschale.',
   },
   {
     number: '03',
@@ -110,38 +109,25 @@ const projects = [
   },
 ];
 
-const testimonials = [
-  {
-    quote:
-      'Terrasse, Rollrasen und neue Beete in nur zwei Wochen – termingerecht und absolut sauber gearbeitet. Wir hätten es uns nicht besser vorstellen können.',
-    name: 'Michael Brandt',
-    role: 'Einfamilienhaus, Musterstadt',
-    image: '/images/testimonial-1.jpg',
-  },
-  {
-    quote:
-      'Wir haben den Pflegevertrag für unsere Wohnanlage abgeschlossen. Seitdem müssen wir uns um nichts mehr kümmern – die Anlage sieht das ganze Jahr top aus.',
-    name: 'Sandra Keller',
-    role: 'Hausverwaltung Keller & Partner',
-    image: '/images/testimonial-2.jpg',
-  },
-  {
-    quote:
-      'Fenster und PV-Anlage werden zweimal im Jahr gereinigt. Der Ertrag ist spürbar besser und die Abstimmung läuft völlig unkompliziert.',
-    name: 'Thomas Reuter',
-    role: 'Gewerbeobjekt, Musterstadt',
-    image: '/images/testimonial-3.jpg',
-  },
-];
+// Echte Google-Bewertungen hier eintragen. Solange die Liste leer ist,
+// wird der gesamte Kundenstimmen-Abschnitt nicht angezeigt.
+// Aufbau pro Eintrag:
+//   { quote: 'Text der Bewertung', name: 'Vorname N.', role: 'Google-Bewertung', stars: 5 }
+const testimonials: {
+  quote: string;
+  name: string;
+  role: string;
+  stars: number;
+}[] = [];
 
 const faqs = [
   {
     q: 'Kostet die Beratung vor Ort etwas?',
-    a: 'Nein. Der Vor-Ort-Termin, die Beratung und das anschließende Festpreisangebot sind für Sie komplett kostenlos und unverbindlich.',
+    a: 'Nein. Der Vor-Ort-Termin, die Beratung und das anschließende Angebot sind für Sie komplett kostenlos und unverbindlich.',
   },
   {
     q: 'In welchem Umkreis arbeiten Sie?',
-    a: 'Wir sind im Umkreis von rund 50 km um Musterstadt für Sie unterwegs. Bei größeren Projekten kommen wir auf Anfrage auch weiter – sprechen Sie uns einfach an.',
+    a: 'Wir sind in Weinheim und Umgebung für Sie unterwegs. Bei größeren Projekten kommen wir auf Anfrage auch weiter – sprechen Sie uns einfach an.',
   },
   {
     q: 'Übernehmen Sie auch die Entsorgung des Grünschnitts?',
@@ -160,7 +146,7 @@ const faqs = [
 
 <BaseLayout
   title="EA-Außenpflege | Garten- & Landschaftsbau, Gartenpflege und Reinigung"
-  description="EA-Außenpflege ist Ihr Meisterbetrieb für Garten- und Landschaftsbau, Gartenpflege sowie die Reinigung von Fenstern, Photovoltaikanlagen und Fassaden. Jetzt kostenloses Angebot anfordern."
+  description="EA-Außenpflege ist Ihr Partner für Garten- und Landschaftsbau, Gartenpflege sowie die Reinigung von Fenstern, Photovoltaikanlagen und Fassaden in Weinheim und Umgebung. Jetzt kostenloses Angebot anfordern."
 >
   <!-- ============================ HERO ============================ -->
   <section class="hero">
@@ -176,7 +162,7 @@ const faqs = [
 
     <div class="container hero__inner">
       <p class="hero__eyebrow animate-in" style="--delay: 60ms">
-        <span aria-hidden="true">🌱</span> Meisterbetrieb aus Musterstadt
+        <span aria-hidden="true">🌱</span> Garten- &amp; Außenpflege in Weinheim und Umgebung
       </p>
 
       <h1 class="animate-in" style="--delay: 160ms">
@@ -199,8 +185,8 @@ const faqs = [
 
       <ul class="hero__facts animate-in" style="--delay: 460ms">
         <li>Kostenlose Beratung vor Ort</li>
-        <li>Festpreis-Garantie</li>
-        <li>Antwort in 24 Stunden</li>
+        <li>Fest- &amp; Pauschalpreise</li>
+        <li>Antwort in 12 Stunden</li>
       </ul>
     </div>
   </section>
@@ -236,9 +222,9 @@ const faqs = [
   <section class="statement section">
     <div class="container">
       <p data-reveal>
-        <strong>EA-Außenpflege</strong> ist Ihr Meisterbetrieb für Garten- und Landschaftsbau –
+        <strong>EA-Außenpflege</strong> ist Ihr Partner für Garten- und Landschaftsbau –
         für <span class="hl">Privatgärten</span>, <span class="hl">Hausverwaltungen</span> und
-        <span class="hl">Gewerbeobjekte</span> in Musterstadt und Umgebung.
+        <span class="hl">Gewerbeobjekte</span> in Weinheim und Umgebung.
       </p>
     </div>
   </section>
@@ -318,19 +304,11 @@ const faqs = [
 
       <div class="stats" data-reveal>
         <div class="stat">
-          <span class="stat__value"><span data-count="150">0</span>+</span>
-          <span class="stat__label">umgesetzte Projekte</span>
-        </div>
-        <div class="stat">
-          <span class="stat__value"><span data-count="12">0</span></span>
+          <span class="stat__value"><span data-count="3">0</span></span>
           <span class="stat__label">Jahre Erfahrung</span>
         </div>
         <div class="stat">
-          <span class="stat__value"><span data-count="100">0</span>%</span>
-          <span class="stat__label">Festpreis-Garantie</span>
-        </div>
-        <div class="stat">
-          <span class="stat__value"><span data-count="24">0</span>h</span>
+          <span class="stat__value"><span data-count="12">0</span>h</span>
           <span class="stat__label">Antwortzeit</span>
         </div>
       </div>
@@ -423,7 +401,7 @@ const faqs = [
           loading="lazy"
         />
         <div class="about__badge">
-          <strong>seit 2013</strong>
+          <strong>seit 2023</strong>
           <span>im Familienbetrieb</span>
         </div>
       </div>
@@ -432,7 +410,7 @@ const faqs = [
         <span class="eyebrow">Über uns</span>
         <h2>Ein Betrieb, der beim Wort genommen werden will</h2>
         <p class="lead">
-          EA-Außenpflege ist ein inhabergeführter Familienbetrieb aus Musterstadt. Angefangen mit
+          EA-Außenpflege ist ein inhabergeführter Familienbetrieb aus Weinheim. Angefangen mit
           einem Anhänger und viel Freude an der Arbeit im Grünen, sind wir heute ein eingespieltes
           Team für alles rund um Haus und Garten.
         </p>
@@ -450,39 +428,45 @@ const faqs = [
   </section>
 
   <!-- ======================== TESTIMONIALS ======================== -->
-  <section class="section section--soft" id="stimmen">
-    <div class="container">
-      <div class="section-head" data-reveal>
-        <span class="eyebrow">Kundenstimmen</span>
-        <h2>Was unsere Kunden sagen</h2>
-        <p>Ehrliche Rückmeldungen aus Privatgärten, Wohnanlagen und Gewerbeobjekten.</p>
-      </div>
+  {
+    testimonials.length > 0 && (
+      <section class="section section--soft" id="stimmen">
+        <div class="container">
+          <div class="section-head" data-reveal>
+            <span class="eyebrow">Kundenstimmen</span>
+            <h2>Was unsere Kunden sagen</h2>
+            <p>Bewertungen unserer Kundinnen und Kunden bei Google.</p>
+          </div>
 
-      <div class="testimonials">
-        {
-          testimonials.map((testimonial, index) => (
-            <figure class="testimonial" data-reveal style={`--reveal-delay: ${index * 100}ms`}>
-              <div class="testimonial__stars" aria-label="Fünf von fünf Sternen">★★★★★</div>
-              <blockquote>{testimonial.quote}</blockquote>
-              <figcaption>
-                <img src={testimonial.image} alt="" width="56" height="56" loading="lazy" />
-                <span>
-                  <strong>{testimonial.name}</strong>
-                  <small>{testimonial.role}</small>
-                </span>
-              </figcaption>
-            </figure>
-          ))
-        }
-      </div>
+          <div class="testimonials">
+            {testimonials.map((testimonial, index) => (
+              <figure class="testimonial" data-reveal style={`--reveal-delay: ${index * 100}ms`}>
+                <div
+                  class="testimonial__stars"
+                  aria-label={`${testimonial.stars} von 5 Sternen`}
+                >
+                  {'★'.repeat(testimonial.stars)}
+                </div>
+                <blockquote>{testimonial.quote}</blockquote>
+                <figcaption>
+                  <span>
+                    <strong>{testimonial.name}</strong>
+                    <small>{testimonial.role}</small>
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
 
-      <div class="center-cta" data-reveal>
-        <a class="btn btn--primary" href="/kontakt">
-          Kostenloses Angebot anfordern <span class="arrow" aria-hidden="true">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
+          <div class="center-cta" data-reveal>
+            <a class="btn btn--primary" href="/kontakt">
+              Kostenloses Angebot anfordern <span class="arrow" aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <!-- ============================= FAQ ============================ -->
   <section class="section" id="faq">
@@ -521,7 +505,7 @@ const faqs = [
       <span class="eyebrow eyebrow--light">Kostenlos &amp; unverbindlich</span>
       <h2>Lassen Sie uns über Ihren Außenbereich sprechen</h2>
       <p>
-        Erzählen Sie uns kurz, worum es geht. Wir melden uns innerhalb von 24 Stunden mit einem
+        Erzählen Sie uns kurz, worum es geht. Wir melden uns innerhalb von 12 Stunden mit einem
         Terminvorschlag – und kommen für die Beratung persönlich vorbei.
       </p>
 
@@ -529,7 +513,7 @@ const faqs = [
         <a class="btn btn--primary" href="/kontakt">
           Kostenloses Angebot anfordern <span class="arrow" aria-hidden="true">→</span>
         </a>
-        <a class="btn btn--ghost-light" href="tel:+491234567890">Oder anrufen: 0123 456 78 90</a>
+        <a class="btn btn--ghost-light" href="tel:+4917621190179">Oder anrufen: 0176 21190179</a>
       </div>
     </div>
   </section>
@@ -880,7 +864,7 @@ const faqs = [
 
   .stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     margin-top: clamp(2.5rem, 5vw, 4rem);
     padding: clamp(1.75rem, 3vw, 2.5rem);

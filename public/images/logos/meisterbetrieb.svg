@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 60" width="220" height="60" role="img" aria-label="Meisterbetrieb">
-  <g fill="#1E3D2B">
-    <path d="M23 8l16 6v12c0 10-7 18-16 22-9-4-16-12-16-22V14l16-6z" opacity=".18"/>
-    <path d="M23 8l16 6v12c0 10-7 18-16 22-9-4-16-12-16-22V14l16-6zm0 4L11 16.6V26c0 8 5 14.4 12 17.9 7-3.5 12-9.9 12-17.9v-9.4L23 12z"/>
-    <path d="M17 26l4.5 4.5L30 22l2.6 2.6-11.1 11.1L14.4 28.6 17 26z"/>
-    <text x="54" y="30" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="-.4">Meisterbetrieb</text>
-    <text x="55" y="43" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="9" letter-spacing="2.4" opacity=".65">GEPRÜFT</text>
-  </g>
-</svg>
