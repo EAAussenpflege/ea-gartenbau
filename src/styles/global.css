@@ -569,3 +569,68 @@ p { text-wrap: pretty; }
   color: var(--green-dark);
   font-weight: 600;
 }
+
+/* =========================================================
+   Rechtstexte (Impressum, Datenschutz)
+   ========================================================= */
+
+.rechtstext {
+  padding-block: clamp(3rem, 6vw, 5rem);
+  max-width: 780px;
+  margin-inline: auto;
+}
+
+.rechtstext h2 {
+  font-size: clamp(1.3rem, 1.1rem + 0.7vw, 1.6rem);
+  margin-top: 2.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.rechtstext h2:first-child {
+  margin-top: 0;
+}
+
+.rechtstext h3 {
+  font-size: 1.1rem;
+  margin-top: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.rechtstext p,
+.rechtstext li {
+  color: var(--ink-muted);
+  line-height: 1.8;
+}
+
+.rechtstext p + p {
+  margin-top: 0.9rem;
+}
+
+.rechtstext ul {
+  margin-top: 0.9rem;
+  padding-left: 1.3rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.rechtstext a {
+  color: var(--green-700);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.rechtstext address {
+  font-style: normal;
+  line-height: 1.9;
+}
+
+/* Auffällige Markierung für noch fehlende Angaben.
+   Vor dem Livegang müssen alle .luecke-Stellen verschwunden sein. */
+.luecke {
+  padding: 0.1em 0.45em;
+  border-radius: 6px;
+  background: #fde68a;
+  color: #7c4a03;
+  font-weight: 600;
+  box-decoration-break: clone;
+}
