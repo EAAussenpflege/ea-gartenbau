@@ -102,16 +102,36 @@ const projects = [
   },
 ];
 
-// Echte Google-Bewertungen hier eintragen. Solange die Liste leer ist,
-// wird der gesamte Kundenstimmen-Abschnitt nicht angezeigt.
-// Aufbau pro Eintrag:
-//   { quote: 'Text der Bewertung', name: 'Vorname N.', role: 'Google-Bewertung', stars: 5 }
+// Echte Google-Bewertungen, wortgetreu übernommen. Solange die Liste leer
+// ist, wird der gesamte Kundenstimmen-Abschnitt nicht angezeigt.
 const testimonials: {
   quote: string;
   name: string;
   role: string;
   stars: number;
-}[] = [];
+}[] = [
+  {
+    quote:
+      'Super Arbeit! Die Gartenpflege wurde schnell, sauber und zuverlässig erledigt. Sehr freundliches Team und der Garten sieht wieder top aus. Klare Empfehlung!',
+    name: 'Enes58',
+    role: 'Google-Bewertung',
+    stars: 5,
+  },
+  {
+    quote:
+      'Sehr zuverlässige Arbeit. Der Garten sieht wieder top aus, alles sauber und ordentlich erledigt. Preis Leistungsverhältnis fande ich auch super. Klare Empfehlung',
+    name: 'Emir D.',
+    role: 'Google-Bewertung',
+    stars: 5,
+  },
+  {
+    quote:
+      'Ich bin mit der Arbeit sehr zufrieden. Die Gartenarbeiter waren pünktlich, freundlich und haben alle Arbeiten sorgfältig und professionell erledigt. Der Garten sieht jetzt gepflegt und ordentlich aus. Besonders gefallen hat mir das Preis-Leistungs-Verhältnis. Ich kann den Service nur weiterempfehlen und werde sie bei Bedarf wieder beauftragen. Sehr sympathische Jungs',
+    name: 'Matteo',
+    role: 'Google-Bewertung',
+    stars: 5,
+  },
+];
 
 const faqs = [
   {
