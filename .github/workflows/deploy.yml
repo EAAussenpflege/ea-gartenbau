@@ -44,6 +44,11 @@ jobs:
 
       - name: Per FTP zu STRATO hochladen
         uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        # STRATO ist per IPv4 und IPv6 erreichbar, die GitHub-Runner haben
+        # aber kein IPv6-Netz. Ohne diese Zeile versucht Node zuerst die
+        # IPv6-Adresse und bricht mit ENETUNREACH ab.
+        env:
+          NODE_OPTIONS: --dns-result-order=ipv4first
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
