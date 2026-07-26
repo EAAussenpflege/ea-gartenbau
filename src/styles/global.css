@@ -284,33 +284,31 @@ p { text-wrap: pretty; }
   letter-spacing: -0.02em;
 }
 
-.logo__mark {
-  display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(140deg, var(--green) 0%, var(--green-700) 100%);
-  color: var(--white);
-  font-size: 0.95rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  box-shadow: var(--shadow-sm);
+/* Sechseck aus dem Firmenlogo */
+.logo__bild {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  object-fit: contain;
   transition: transform var(--speed) var(--ease);
 }
 
-.logo:hover .logo__mark { transform: rotate(-6deg) scale(1.05); }
+.logo:hover .logo__bild { transform: rotate(-6deg) scale(1.05); }
 
 .logo__text small {
   display: block;
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--green-700);
-  line-height: 1;
-  margin-top: 2px;
+  line-height: 1.2;
+  margin-top: 3px;
 }
+
+/* Footer: helle Schrift auf dunklem Grund */
+.logo--hell { color: var(--white); }
+.logo--hell .logo__text small { color: rgba(255, 255, 255, 0.72); }
 
 .nav { display: flex; align-items: center; gap: 0.35rem; }
 

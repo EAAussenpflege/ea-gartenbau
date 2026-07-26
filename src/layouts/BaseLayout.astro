@@ -29,7 +29,8 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
     <script is:inline>
       document.documentElement.classList.add('js');
     </script>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -45,10 +46,17 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
     <header class="site-header" id="siteHeader">
       <div class="container site-header__inner">
         <a href="/" class="logo" aria-label="EA-Außenpflege – zur Startseite">
-          <span class="logo__mark" aria-hidden="true">EA</span>
+          <img
+            class="logo__bild"
+            src="/images/logo-mark.png"
+            alt=""
+            width="128"
+            height="128"
+            fetchpriority="high"
+          />
           <span class="logo__text">
             EA-Außenpflege
-            <small>Garten &amp; Landschaftsbau</small>
+            <small>Garten- &amp; Außenanlagen Service</small>
           </span>
         </a>
 
@@ -82,11 +90,18 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <a href="/" class="logo">
-              <span class="logo__mark" aria-hidden="true">EA</span>
+            <a href="/" class="logo logo--hell">
+              <img
+                class="logo__bild"
+                src="/images/logo-mark-hell.png"
+                alt=""
+                width="128"
+                height="128"
+                loading="lazy"
+              />
               <span class="logo__text">
                 EA-Außenpflege
-                <small>Garten &amp; Landschaftsbau</small>
+                <small>Garten- &amp; Außenanlagen Service</small>
               </span>
             </a>
             <p>
