@@ -557,13 +557,18 @@ const faqs = [
     position: absolute;
     inset: 0;
     z-index: 0;
+    /* Wird beim Scrollen per JavaScript leicht mitbewegt (Parallax). */
+    will-change: transform;
   }
 
   .hero__bg img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    animation: hero-zoom 16s var(--ease) forwards;
+    /* Sehr langsames Heranfahren – über eine Minute kaum bewusst wahrnehmbar,
+       lässt das Titelbild aber lebendig statt wie ein Standbild wirken. */
+    transform-origin: 58% 45%;
+    animation: hero-zoom 70s linear forwards;
   }
 
   .hero__bg::after {
@@ -582,10 +587,18 @@ const faqs = [
 
   @keyframes hero-zoom {
     from {
-      transform: scale(1.12);
+      transform: scale(1.02);
     }
     to {
-      transform: scale(1);
+      transform: scale(1.14);
+    }
+  }
+
+  /* Wer Bewegung reduziert haben möchte, bekommt ein ruhiges Standbild. */
+  @media (prefers-reduced-motion: reduce) {
+    .hero__bg img {
+      animation: none;
+      transform: scale(1.04);
     }
   }
 

@@ -43,6 +43,8 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
   </head>
 
   <body>
+    <div class="lesefortschritt" id="lesefortschritt" aria-hidden="true"></div>
+
     <header class="site-header" id="siteHeader">
       <div class="container site-header__inner">
         <a href="/" class="logo" aria-label="EA-Außenpflege – zur Startseite">
@@ -155,6 +157,46 @@ const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.s
       const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
+
+      // --- Lesefortschritt und Parallax im Titelbild ---
+      // Beides hängt am selben Scroll-Ereignis und wird über
+      // requestAnimationFrame gebündelt, damit das Scrollen flüssig bleibt.
+      const fortschritt = document.getElementById('lesefortschritt');
+      const titelbild = document.querySelector('.hero__bg');
+      const wenigerBewegung = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (fortschritt || (titelbild && !wenigerBewegung)) {
+        let angefordert = false;
+
+        const zeichnen = () => {
+          angefordert = false;
+          const position = window.scrollY;
+
+          if (fortschritt) {
+            const strecke = document.documentElement.scrollHeight - window.innerHeight;
+            const anteil = strecke > 0 ? Math.min(position / strecke, 1) : 0;
+            fortschritt.style.transform = `scaleX(${anteil})`;
+          }
+
+          // Das Titelbild wandert langsamer als die Seite – aber nur,
+          // solange es überhaupt sichtbar ist.
+          if (titelbild instanceof HTMLElement && !wenigerBewegung) {
+            if (position < window.innerHeight * 1.2) {
+              titelbild.style.transform = `translate3d(0, ${position * 0.22}px, 0)`;
+            }
+          }
+        };
+
+        const anfordern = () => {
+          if (angefordert) return;
+          angefordert = true;
+          window.requestAnimationFrame(zeichnen);
+        };
+
+        zeichnen();
+        window.addEventListener('scroll', anfordern, { passive: true });
+        window.addEventListener('resize', anfordern, { passive: true });
+      }
 
       // --- Mobile Navigation ---
       const toggle = document.getElementById('navToggle');
