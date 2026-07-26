@@ -6,10 +6,14 @@ const telefonLink = 'tel:+4917621190179';
 const whatsappLink = 'https://wa.me/4917621190179';
 const email = 'kontakt@ea-aussenpflege.de';
 
-// Schlüssel von web3forms.com – wird in der .env hinterlegt als
-// PUBLIC_WEB3FORMS_KEY=... Ohne Schlüssel wird statt des Formulars
-// ein Hinweis angezeigt, damit die Seite nie kaputt aussieht.
-const formularSchluessel = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+// Zugangsschlüssel von web3forms.com. Er steht bewusst direkt hier im Code:
+// Web3Forms setzt diesen Schlüssel im fertigen HTML jeder Seite ein, er ist
+// also ohnehin öffentlich sichtbar und kein Geheimnis. Läge er nur in der
+// .env, würde die GitHub-Action ohne Schlüssel bauen – das Formular wäre
+// nach jedem automatischen Deployment deaktiviert.
+// Über PUBLIC_WEB3FORMS_KEY in der .env lässt er sich überschreiben.
+const formularSchluessel =
+  import.meta.env.PUBLIC_WEB3FORMS_KEY || 'd6399d60-9b7b-4c51-8b69-85086ca348d8';
 
 const kontaktwege = [
   {
